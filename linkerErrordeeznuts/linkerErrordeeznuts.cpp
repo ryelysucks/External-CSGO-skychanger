@@ -74,7 +74,7 @@ void nightmode() {
             int classID = mem.Read<int>(classPointer + 0x14);
 
             if (modeVal == 1) {
-                brightness = 1.5f;
+                brightness = 2.f;
             }
             else {
                 brightness = 0.f;
