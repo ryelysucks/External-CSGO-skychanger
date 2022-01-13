@@ -161,8 +161,7 @@ std::string skybox(const auto client) {
     }
 }
 
-void display(const auto client,
-    const auto engine) {
+void display(const auto client, const auto engine) {
     system("cls");
     std::cout << "Client address found at: " << std::hex << client << std::endl;
     std::cout << "Engine address found at: " << std::hex << engine << std::endl;
