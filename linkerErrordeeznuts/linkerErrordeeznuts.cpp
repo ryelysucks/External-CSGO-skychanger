@@ -47,10 +47,10 @@ std::string caseValue(int value) //not sure why it's become a hex value....?
 void remove3dSky(const auto client, int value) {
     int skyDisable = (Memory("csgo.exe").Read<BYTE>(client + offsets::r3dSky + 0x30));
 
-    if (skyDisable == 57 && value == 1) {
+    if (skyDisable == 161 && value == 1) {
         Memory("csgo.exe").Write<BYTE>(client + offsets::r3dSky + 0x30, skyDisable - 1);
     }
-    else if (skyDisable == 56 && value == 0) {
+    else if (skyDisable == 160 && value == 0) {
         Memory("csgo.exe").Write<BYTE>(client + offsets::r3dSky + 0x30, skyDisable + 1);
     }
 }
@@ -114,8 +114,6 @@ bool isPlaying(const auto engine) {
 
 std::string skybox(const auto client) {
     const auto sky = Memory("csgo.exe").Read<std::uintptr_t>(client + offsets::skyboxCV);
-    const auto sky2 = Memory("csgo.exe").Read<std::uintptr_t>(sky + 0x8);
-    const auto test = sky2 + 0x90;
 
     if (enabled) {
         if (option == 26)
@@ -125,14 +123,14 @@ std::string skybox(const auto client) {
 
         if (caseValue(option) == "night02") {
             char night02[] = { 's', 'k', 'y', '_', 'c', 's', 'g', 'o', '_', 'n', 'i', 'g', 'h', 't', '0', '2', '\0' };  //lol
-            Memory("csgo.exe").Write<char[17]>(test, night02);
+            Memory("csgo.exe").Write<char[17]>(sky, night02);
             remove3dSky(client, 1);
             modeVal = true;
             nightmode();
             return (caseValue(option));
         }
         else if (caseValue(option) == "sky_lunacy") {
-            Memory("csgo.exe").Write<std::string>(test, caseValue(option));
+            Memory("csgo.exe").Write<std::string>(sky, caseValue(option));
             remove3dSky(client, 1);
             modeVal = true;
             nightmode();
@@ -140,14 +138,14 @@ std::string skybox(const auto client) {
         }
         else {
             if (caseValue(option) == originalSky) {
-                Memory("csgo.exe").Write<std::string>(test, caseValue(option));
+                Memory("csgo.exe").Write<std::string>(sky, caseValue(option));
                 remove3dSky(client, 0);
                 modeVal = false;
                 nightmode();
                 return (caseValue(option) + " (default)");
             }
             else {
-                Memory("csgo.exe").Write<std::string>(test, caseValue(option));
+                Memory("csgo.exe").Write<std::string>(sky, caseValue(option));
                 remove3dSky(client, 1);
                 modeVal = false;
                 nightmode();
@@ -156,7 +154,7 @@ std::string skybox(const auto client) {
         }
     }
     else {
-        originalSky = Memory("csgo.exe").Read<char[16]>(test);
+        originalSky = Memory("csgo.exe").Read<char[16]>(sky);
         return (originalSky + " (default)");
     }
 }
